@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>História Interativa de Vôlei</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .story-step {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>História Interativa de Vôlei: Sesi-SP vs Minas</h1>
+    <div id="story" class="story-step"></div>
+    <div id="options" class="story-step"></div>
+</div>
+
+<script>
+    const story = [
+        {
+            text: "O jogo entre Sesi-SP e Minas começa com grande entusiasmo.",
+            options: [
+                { text: "O Sesi-SP inicia o jogo com um saque forte.", nextStep: 1 },
+                { text: "O Minas começa com um saque preciso.", nextStep: 2 }
+            ]
+        },
+        {
+            text: "O Sesi-SP faz um saque potente e o Minas tem dificuldades em receber a bola.",
+            options: [
+                { text: "O Minas tenta uma recuperação rápida.", nextStep: 3 },
+                { text: "O Minas comete um erro e o Sesi-SP ganha o ponto.", nextStep: 4 }
+            ]
+        },
+        {
+            text: "O Minas faz um saque bem colocado e o Sesi-SP enfrenta dificuldades.",
+            options: [
+                { text: "O Sesi-SP consegue recuperar a bola.", nextStep: 5 },
+                { text: "O Sesi-SP comete um erro e o Minas ganha o ponto.", nextStep: 6 }
+            ]
+        },
+        {
+            text: "O Minas faz um ataque rápido e marca um ponto com um bom ataque.",
+            options: [
+                { text: "O Sesi-SP tenta um bloqueio.", nextStep: 7 },
+                { text: "O Sesi-SP não consegue bloquear e o Minas ganha o ponto.", nextStep: 8 }
+            ]
+        },
+        {
+            text: "O Sesi-SP comemora a vantagem e está mais motivado para o próximo ponto.",
+            options: [
+                { text: "O Minas tenta se recuperar com uma boa defesa.", nextStep: 9 },
+                { text: "O Sesi-SP continua atacando com força.", nextStep: 10 }
+            ]
+        },
+        {
+            text: "O Sesi-SP recupera a bola e faz um ataque rápido que surpreende o Minas.",
+            options: [
+                { text: "O Minas defende bem e contra-ataca.", nextStep: 11 },
+                { text: "O Minas não consegue defender e o Sesi-SP marca mais um ponto.", nextStep: 12 }
+            ]
+        },
+        {
+            text: "O Minas faz um bom trabalho na defesa e marca um ponto com um ataque bem colocado.",
+            options: [
+                { text: "O Sesi-SP responde com uma boa estratégia.", nextStep: 13 },
+                { text: "O Minas continua pressionando e marca outro ponto.", nextStep: 4 }
+            ]
+        },
+        {
+            text: "O Sesi-SP faz um excelente bloqueio e o Minas não consegue passar a bola.",
+            options: [
+                { text: "O Minas tenta uma nova estratégia.", nextStep: 9 },
+                { text: "O Sesi-SP continua pressionando e ganha o ponto.", nextStep: 8 }
+            ]
+        },
+        {
+            text: "O Sesi-SP ganha mais um ponto com um ataque certeiro.",
+            options: [
+                { text: "O Minas tenta uma nova abordagem.", nextStep: 11 },
+                { text: "O Sesi-SP se aproxima da vitória.", nextStep: 12 }
+            ]
+        },
+        {
+            text: "O Minas tenta uma boa defesa, mas o Sesi-SP está muito forte.",
+            options: [
+                { text: "O Minas faz uma última tentativa de reação.", nextStep: 13 },
+                { text: "O Sesi-SP marca o ponto decisivo e vence o jogo.", nextStep: 12 }
+            ]
+        },
+        {
+            text: "O jogo está emocionante, com ambos os times dando o seu melhor.",
+            options: [
+                { text: "O Sesi-SP ganha mais um ponto com uma jogada incrível.", nextStep: 12 },
+                { text: "O Minas responde com um ponto espetacular.", nextStep: 4 }
+            ]
+        },
+        {
+            text: "O Sesi-SP continua sua sequência de boas jogadas e está próximo da vitória.",
+            options: [
+                { text: "O Minas faz um esforço final.", nextStep: 13 },
+                { text: "O Sesi-SP ganha o jogo com uma excelente performance.", nextStep: 12 }
+            ]
+        },
+        {
+            text: "O Minas faz um ataque impressionante, mas o Sesi-SP defende bem.",
+            options: [
+                { text: "O Minas tenta uma jogada final.", nextStep: 13 },
+                { text: "O Sesi-SP faz o ponto decisivo e vence o jogo.", nextStep: 12 }
+            ]
+        },
+        {
+            text: "Finalmente, o jogo termina e o Sesi-SP vence com um desempenho impressionante.",
+            options: [
+                { text: "Parabéns ao Sesi-SP!", nextStep: null },
+                { text: "Parabéns ao Minas pelo esforço!", nextStep: null }
+            ]
+        }
+    ];
+
+    let currentStep = 0;
+
+    function showStep(step) {
+        const storyElement = document.getElementById('story');
+        const optionsElement = document.getElementById('options');
+
+        if (step === null) {
+            storyElement.innerHTML = "Fim da história!";
+            optionsElement.innerHTML = "";
+            return;
+        }
+
+        storyElement.innerHTML = story[step].text;
+        optionsElement.innerHTML = '';
+
+        story[step].options.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option.text;
+            button.onclick = () => showStep(option.nextStep);
+            optionsElement.appendChild(button);
+        });
+    }
+
+    showStep(currentStep);
+</script>
+
+</body>
+</html>
